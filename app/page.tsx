@@ -16,13 +16,13 @@ export default function Home() {
     const data = await res.json();
 
     const reply = data.choices?.[0]?.message?.content || "(no response)";
-    setMessages([...newMessages, { role: "assistant", content: reply }]);
+    setMessages([...newMessages, { role: "bot", content: reply }]);
     setInput("");
   }
 
   return (
     <div style={{ maxWidth: 600, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <h1>💬 Minimal OpenRouter Chatbot</h1>
+      <h1>Minimal Free Chatbot</h1>
 
       <div style={{ border: "1px solid #ccc", padding: 10, minHeight: 200 }}>
         {messages.map((m, i) => (
