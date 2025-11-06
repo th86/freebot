@@ -5,16 +5,36 @@ import { useChat, type UIMessage } from "@ai-sdk/react";
 
 export default function Page() {
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status } = useChat({
-    transport: {
-      api: "/api/chat",
-    },
-  });
+  const { messages, appendMessage } = useChat(); // no transport needed
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input) return;
-    sendMessage({ text: input });
+
+    // Append user message
+    appendMessage({ role: "user", parts: [{ type: "text", text: input }] });
+
+    setStatus("loading");
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: [{ role: "user", content: input }] }),
+      });
+
+      const data = await res.json();
+
+      // Append assistant message
+      appendMessage({ role: "assistant", parts: [{ type: "text", text: data.text }] });
+
+      setStatus("idle");
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
+
     setInput("");
   };
 
@@ -26,7 +46,7 @@ export default function Page() {
         {messages.map((m: UIMessage, i: number) => (
           <div key={i}>
             <strong>{m.role}:</strong>{" "}
-            {m.parts.map(p => (p.type === "text" ? p.text : ""))}
+            {m.parts.map((p) => (p.type === "text" ? p.text : ""))}
           </div>
         ))}
       </div>
@@ -34,7 +54,7 @@ export default function Page() {
       <form onSubmit={handleSubmit} style={{ display: "flex", gap: 8 }}>
         <input
           value={input}
-          onChange={e => setInput(e.target.value)}
+          onChange={(e) => setInput(e.target.value)}
           placeholder="Say something…"
           style={{ flex: 1 }}
         />
