@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ai": "latest",
+    "@openrouter/ai-sdk-provider": "latest",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "next": "15.4.2"
