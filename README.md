@@ -1,4 +1,4 @@
-# Freebot - Zero-cost LLM chatbot service
+# Freebot - Zero-cost LLM Chatbot Service
 
 This is a minimalist example of LLM-based chatbot using OpenRouter API and is hosted on Vercel. 
 
