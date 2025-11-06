@@ -11,4 +11,4 @@ Before you start, you need:
 To launch your own chatbot:
 1. Create a new project on Vercel by importing this repository.
 2. dd your OpenRouter token in `Environment Variables` of the project as `OPENROUTER_API_KEY`.
-3. Deploy the project
+3. Deploy the project.
