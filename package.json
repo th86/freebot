@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "ai": "latest",
+    "@ai-sdk/react": "^5.5.0",
     "@openrouter/ai-sdk-provider": "latest",
     "react": "19.0.0",
     "react-dom": "19.0.0",
