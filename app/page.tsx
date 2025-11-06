@@ -5,37 +5,46 @@ import { useChat, type UIMessage } from "@ai-sdk/react";
 
 export default function Page() {
   const [input, setInput] = useState("");
-  const { messages, appendMessage } = useChat(); // no transport needed
+  const [messages, setMessages] = useState<UIMessage[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input) return;
 
-    // Append user message
-    appendMessage({ role: "user", parts: [{ type: "text", text: input }] });
-
+    // Add user message
+    const userMessage: UIMessage = {
+      id: crypto.randomUUID(),
+      role: "user",
+      parts: [{ type: "text", text: input }],
+    };
+    setMessages((prev) => [...prev, userMessage]);
     setStatus("loading");
 
     try {
+      // Send to API
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [{ role: "user", content: input }] }),
+        body: JSON.stringify({
+          messages: [...messages, { role: "user", content: input }],
+        }),
       });
-
       const data = await res.json();
 
-      // Append assistant message
-      appendMessage({ role: "assistant", parts: [{ type: "text", text: data.text }] });
-
+      // Add assistant message
+      const assistantMessage: UIMessage = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        parts: [{ type: "text", text: data.text }],
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
       setStatus("idle");
+      setInput("");
     } catch (err) {
       console.error(err);
       setStatus("error");
     }
-
-    setInput("");
   };
 
   return (
@@ -43,8 +52,8 @@ export default function Page() {
       <h1>My Chatbot</h1>
 
       <div style={{ marginBottom: "1rem" }}>
-        {messages.map((m: UIMessage, i: number) => (
-          <div key={i}>
+        {messages.map((m) => (
+          <div key={m.id}>
             <strong>{m.role}:</strong>{" "}
             {m.parts.map((p) => (p.type === "text" ? p.text : ""))}
           </div>
