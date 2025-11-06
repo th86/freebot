@@ -1,20 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useChat, type UIMessage } from "@ai-sdk/react";
+import { type UIMessage } from "@ai-sdk/react";
 
 export default function Page() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<UIMessage[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 
+  // Generate a simple unique ID for messages
+  const generateId = () => `${Date.now()}-${Math.random()}`;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input) return;
+    if (!input.trim()) return;
 
     // Add user message
     const userMessage: UIMessage = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: "user",
       parts: [{ type: "text", text: input }],
     };
@@ -22,7 +25,7 @@ export default function Page() {
     setStatus("loading");
 
     try {
-      // Send to API
+      // Send user message to API
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,7 +37,7 @@ export default function Page() {
 
       // Add assistant message
       const assistantMessage: UIMessage = {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: "assistant",
         parts: [{ type: "text", text: data.text }],
       };
@@ -53,7 +56,7 @@ export default function Page() {
 
       <div style={{ marginBottom: "1rem" }}>
         {messages.map((m) => (
-          <div key={m.id}>
+          <div key={m.id} style={{ marginBottom: 8 }}>
             <strong>{m.role}:</strong>{" "}
             {m.parts.map((p) => (p.type === "text" ? p.text : ""))}
           </div>
@@ -68,9 +71,13 @@ export default function Page() {
           style={{ flex: 1 }}
         />
         <button type="submit" disabled={status === "loading"}>
-          Send
+          {status === "loading" ? "Sending..." : "Send"}
         </button>
       </form>
+
+      {status === "error" && (
+        <p style={{ color: "red", marginTop: 8 }}>Something went wrong.</p>
+      )}
     </main>
   );
 }
