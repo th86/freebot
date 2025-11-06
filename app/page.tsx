@@ -27,9 +27,9 @@ export default function Page() {
       });
 
       const data = await res.json();
-
       const assistantMessage: Message = { id: generateId(), role: "assistant", text: data.text };
       setMessages((prev) => [...prev, assistantMessage]);
+
       setInput("");
       setStatus("idle");
     } catch (err) {
