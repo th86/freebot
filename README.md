@@ -2,7 +2,7 @@
 
 This is a minimalist example of LLM-based chatbot using OpenRouter API and is hosted on Vercel. 
 
-Here is the [working demo](https://freebot-wine.vercel.app/)
+Here is a [working demo](https://freebot-wine.vercel.app/).
 
 Before you start, you need: 
 * a [Vercel](https://vercel.com/) hobby account 
