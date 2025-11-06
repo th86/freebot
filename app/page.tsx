@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 
-type Message = {
-  id: string;
-  role: "user" | "assistant";
-  text: string;
-};
+type Message = { id: string; role: "user" | "assistant"; text: string };
 
 export default function Page() {
   const [input, setInput] = useState("");
@@ -46,9 +42,9 @@ export default function Page() {
     <main style={{ padding: 24, maxWidth: 600, margin: "0 auto" }}>
       <h1>My Chatbot</h1>
 
-      <div style={{ marginBottom: "1rem" }}>
+      <div style={{ marginBottom: 16 }}>
         {messages.map((m) => (
-          <div key={m.id} style={{ marginBottom: 8 }}>
+          <div key={m.id}>
             <strong>{m.role}:</strong> {m.text}
           </div>
         ))}
@@ -66,9 +62,7 @@ export default function Page() {
         </button>
       </form>
 
-      {status === "error" && (
-        <p style={{ color: "red", marginTop: 8 }}>Something went wrong.</p>
-      )}
+      {status === "error" && <p style={{ color: "red" }}>Something went wrong.</p>}
     </main>
   );
 }
