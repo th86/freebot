@@ -10,18 +10,23 @@ const openrouter = createOpenRouter({
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
-    const formatted = messages.map((m: any) => ({ role: m.role, content: m.content }));
 
+    const formatted = messages.map((m: any) => ({
+      role: m.role,
+      content: m.content,
+    }));
+
+    // Get the model object
     const model = openrouter("deepseek/deepseek-r1-0528-qwen3-8b:free");
 
-    // Non-streaming fetch
+    // Fetch full response (non-streaming)
     const response = await fetchText({ model, messages: formatted });
 
     return new Response(JSON.stringify({ text: response.text }), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
-    console.error(err);
+    console.error("API error:", err);
     return new Response(JSON.stringify({ text: "Something went wrong." }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
