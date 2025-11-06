@@ -18,7 +18,7 @@ export default function Page() {
     });
 
     const data = await res.json();
-    const reply = data.messages.content;
+    const reply = data.choices[0].message.content;
     setMessages([...newMessages, { role: "assistant", content: reply }]);
     setInput("");
   }
