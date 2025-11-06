@@ -27,6 +27,7 @@ export default function Page() {
       });
 
       const data = await res.json();
+
       const assistantMessage: Message = { id: generateId(), role: "assistant", text: data.text };
       setMessages((prev) => [...prev, assistantMessage]);
 
@@ -44,7 +45,7 @@ export default function Page() {
 
       <div style={{ marginBottom: 16 }}>
         {messages.map((m) => (
-          <div key={m.id}>
+          <div key={m.id} style={{ marginBottom: 8 }}>
             <strong>{m.role}:</strong> {m.text}
           </div>
         ))}
