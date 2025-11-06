@@ -23,7 +23,9 @@ export default function Page() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [...messages, { role: "user", content: input }] }),
+        body: JSON.stringify({
+          messages: [...messages, userMessage], // send all previous messages + current input
+        }),
       });
 
       const data = await res.json();
