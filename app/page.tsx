@@ -42,7 +42,7 @@ export default function Page() {
   return (
     <main style={{ padding: 24, maxWidth: 600, margin: "0 auto" }}>
       <h1>Freebot 🍷</h1>
-      <h3>Zero-cost, minimalist chatbot based on OpenRouter</h3>
+      <div>A zero-cost, minimalist LLM chatbot</div>
       <div style={{ marginBottom: 16 }}>
         {messages.map((m) => (
           <div key={m.id} style={{ marginBottom: 8 }}>
@@ -62,11 +62,18 @@ export default function Page() {
           {status === "loading" ? "Sending..." : "Send"}
         </button>
       </form>
+      This chatbot is powered by
+      <a
+        href="https://openrouter.ai/">
+        OpenRouter
+      </a> 
+      and hosted on 
+      <a
+        href="https://vercel.com/">
+        Vercel
+      </a>.<br />
       <a
         href="https://github.com/th86/freebot/"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ marginTop: 8, fontSize: 14, color: "#0070f3" }}
         >
         View this project on GitHub
       </a>
