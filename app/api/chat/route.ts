@@ -15,5 +15,8 @@ export async function POST(req: Request) {
     messages,
   });
 
-  return response.toTextStreamResponse();
+  return new Response(
+    JSON.stringify({ text: response.text }),
+    { headers: { "Content-Type": "application/json" } }
+  );
 }
