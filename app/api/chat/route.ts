@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       content: m.text, // always use 'content' for OpenRouter
     }));
 
-    const model = openrouter("deepseek/deepseek-r1-0528-qwen3-8b:free");
+    const model = openrouter("deepseek/deepseek-r1-0528:free");
 
     const result = await generateText({
       model,
